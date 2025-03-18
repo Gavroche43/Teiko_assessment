@@ -34,7 +34,7 @@ Ensure Python 3 is installed along with dependencies from requirements.txt (pand
     Open and execute the .ipynb file in Jupyter Notebook or Google Colab
     Alternatively, run the .py file
 
-💬 Comments
+##💬 Comments
 
     Rows missing values for 'treatment' and 'response' were included in the cell counts CSV
     but removed for boxplots and final data analysis
