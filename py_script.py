@@ -108,7 +108,7 @@ def plot_rf_boxplots(data: pd.DataFrame, output_filename: str, verbose: bool) ->
 	for ax, cell in zip(axes, cell_types):
 		responders = plot_data[plot_data['response'].str.lower() == 'y'][cell]
 		non_responders = plot_data[plot_data['response'].str.lower() == 'n'][cell]
-		ax.boxplot([responders, non_responders], labels=['Responder', 'Non-responder'])
+		ax.boxplot([responders, non_responders], tick_labels=['Responder', 'Non-responder'])
 		ax.set_title(cell.replace('_percentage','').replace('_',' ').title())
 		ax.set_xlabel("Response")
 		ax.set_ylabel("Relative Frequency")
