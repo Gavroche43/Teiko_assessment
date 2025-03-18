@@ -1,0 +1,12 @@
+Mann-Whitney U Test Results:
+ Cell Type  Mann-Whitney U  p-value
+    b_cell             NaN      NaN
+cd8_t_cell             NaN      NaN
+cd4_t_cell             NaN      NaN
+   nk_cell             NaN      NaN
+  monocyte             NaN      NaN
+
+Significantly Different Cell Populations (p-value < 0.05):
+Empty DataFrame
+Columns: [Cell Type, Mann-Whitney U, p-value]
+Index: []

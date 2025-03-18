@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats as stats
 import argparse
 import os
 
@@ -122,6 +123,42 @@ def plot_rf_boxplots(data: pd.DataFrame, output_filename: str, verbose: bool) ->
 		print("complete. Boxplot saved as", output_path)
 
 """
+@brief Performs a Mann-Whitney U test on cell counts between responders and non-responders and saves the results to a text file.
+@param data DataFrame containing cell counts and response information.
+@param output_path_csv The output CSV file name used to derive the text file name.
+@param verbose Whether to print verbose output.
+"""
+def perform_mann_whitney_test(data: pd.DataFrame, output_path_csv: str, verbose: bool) -> None:
+	cell_types = ['b_cell', 'cd8_t_cell', 'cd4_t_cell', 'nk_cell', 'monocyte']
+	results = []
+	for cell in cell_types:
+		responders = data[data['response'] == 1][cell]
+		non_responders = data[data['response'] == 0][cell]
+		stat, p_value = stats.mannwhitneyu(responders, non_responders, alternative='two-sided')
+		results.append({'Cell Type': cell, 'Mann-Whitney U': stat, 'p-value': p_value})
+	
+	results_df = pd.DataFrame(results)
+	significant_cells = results_df[results_df['p-value'] < 0.05]
+
+	if output_path_csv.endswith('_rf.csv'):
+		stats_filename = output_path_csv.replace('_rf.csv', '_statistics.txt')
+	elif output_path_csv.endswith('.csv'):
+		stats_filename = output_path_csv[:-4] + '_statistics.txt'
+	else:
+		stats_filename = output_path_csv + '_statistics.txt'
+
+	full_path = os.path.join(OUTPUT_DIR, stats_filename)
+
+	with open(full_path, 'w') as f:
+		f.write("Mann-Whitney U Test Results:\n")
+		f.write(results_df.to_string(index=False))
+		f.write("\n\nSignificantly Different Cell Populations (p-value < 0.05):\n")
+		f.write(significant_cells.to_string(index=False))
+
+	if verbose:
+		print(f"Mann-Whitney U test statistics saved to {full_path}")
+
+"""
 @brief Main function to process the CSV file, calculate relative frequencies on the whole dataset,
        and generate boxplots using cleaned data.
 """
@@ -138,6 +175,7 @@ def main():
 	cleaned_df = clean_data(df, args.verbose)
 	rel_freq_cleaned_df = relative_frequencies(cleaned_df, args.verbose)
 	plot_rf_boxplots(rel_freq_cleaned_df,  args.output_path_boxplot, args.verbose)
+	perform_mann_whitney_test(cleaned_df, args.output_path_csv, args.verbose)
 
 if __name__ == "__main__":
 	main()

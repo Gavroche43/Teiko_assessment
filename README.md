@@ -8,7 +8,7 @@
 ## Features  
 - **Data Analysis Pipeline** for generating relative frequency CSV and boxplots  
   - **Input:** Place `.csv` files into `/raw_data/`  
-  - **Output:** Processed CSV and boxplots saved in `/output_data/` (`.csv` and `.png` formats)  
+  - **Output:** Processed CSV, statistics, and boxplots saved in `/output_data/` (`.csv`, `.txt`, and `.png` formats)  
 - **Exploratory Analysis Script** for the Mann-Whitney U test  
 
 ---
